@@ -15,13 +15,16 @@ graph = {
 from collections import deque
 import copy
 
-def BFS(graph, start, goal):
+def BFS_or_DFS(isBFS, graph, start, goal):
     g = copy.deepcopy(graph)
     g[start][0] = True
     path = []
     queue = deque([start])
     while queue and goal not in path:
-        node = queue.popleft()
+        if isBFS == True:
+            node = queue.popleft()
+        else:
+            node = queue.pop()
         path.append(node)
         for n in g[node][1:]:
             if g[n][0] == False:
@@ -31,22 +34,5 @@ def BFS(graph, start, goal):
         return "Goal not found!"
     return path
 
-print("BFS: ", BFS(graph, "A", "K"))
-
-def DFS(graph, start, goal):
-    g = copy.deepcopy(graph)
-    g[start][0] = True
-    path = []
-    queue = deque([start])
-    while queue and goal not in path:
-        node = queue.pop()
-        path.append(node)
-        for n in g[node][1:]:
-            if g[n][0] == False:
-                g[n][0] = True
-                queue.append(n)
-    if goal not in path:
-        return "Goal not found!"
-    return path
-
-print("DFS: ", DFS(graph, "A", "K"))
+print("BFS: ", BFS_or_DFS(True, graph, "A", "K"))
+print("DFS: ", BFS_or_DFS(False, graph, "A", "K"))
